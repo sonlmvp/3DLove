@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Hiệu Ứng Tình Yêu</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #000;
+            height: 100vh;
+        }
+        .falling-text {
+            position: absolute;
+            font-family: Arial, sans-serif;
+            font-size: 24px;
+            text-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor;
+            animation: fall 8s linear infinite;
+            pointer-events: none;
+        }
+        .heart {
+            position: absolute;
+            color: #ff4040;
+            font-size: 30px;
+            text-shadow: 0 0 10px #ff4040, 0 0 20px #ff4040, 0 0 30px #ff4040;
+            animation: fall 8s linear infinite;
+            pointer-events: none;
+        }
+        @keyframes fall {
+            0% { transform: translateY(-100vh); opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <script>
+        const messages = [
+            "Anh yêu em",
+            "Cảm ơn vì em đã đến",
+            "Anh sẽ luôn bên em",
+            "Làm người yêu anh nhé",
+            "Anh sẽ yêu em mãi mãi"
+        ];
+
+        const colors = ["#00ffff", "#ff69b4", "#800080"]; // Cyan, Pink, Purple
+
+        function createFallingElement() {
+            const isHeart = Math.random() < 0.3; // 30% chance for a heart
+            const element = document.createElement('div');
+            element.className = isHeart ? 'heart' : 'falling-text';
+
+            if (isHeart) {
+                element.textContent = '❤️';
+            } else {
+                const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+                element.textContent = randomMessage;
+                // Random color for text
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                element.style.color = randomColor;
+            }
+
+            const x = Math.random() * (window.innerWidth - 200);
+            element.style.left = `${x}px`;
+            element.style.top = `${Math.random() * -100 - 50}px`; // Start above the screen
+
+            const delay = Math.random() * 5;
+            element.style.animationDelay = `${delay}s`;
+
+            document.body.appendChild(element);
+
+            // Remove element after animation ends
+            element.addEventListener('animationend', () => {
+                element.remove();
+            });
+        }
+
+        // Continuously create elements
+        setInterval(createFallingElement, 500);
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            document.querySelectorAll('.falling-text, .heart').forEach(el => {
+                const x = Math.random() * (window.innerWidth - 200);
+                el.style.left = `${x}px`;
+            });
+        });
+    </script>
+</body>
+</html>
